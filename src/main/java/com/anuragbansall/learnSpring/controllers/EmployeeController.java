@@ -19,23 +19,17 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeEntity> getAllEmployees(){
+    public List<EmployeeEntity> getAllEmployees() {
         return employeeRepository.findAll();
     }
 
     @GetMapping(path = "/{id}")
-    public EmployeeEntity getEmployeeById(@PathVariable Long id){
+    public EmployeeEntity getEmployeeById(@PathVariable Long id) {
         return employeeRepository.findById(id).orElse(null);
     }
 
     @PostMapping
-    public EmployeeEntity createEmployee(@RequestBody EmployeeDto employeeDto){
-        EmployeeEntity employeeEntity = new EmployeeEntity();
-        employeeEntity.setName(employeeDto.getName());
-        employeeEntity.setEmail(employeeDto.getEmail());
-        employeeEntity.setAge(employeeDto.getAge());
-        employeeEntity.setDateOfJoining(employeeDto.getDateOfJoining());
-        employeeEntity.setIsActive(employeeDto.getIsActive());
-        return  employeeRepository.save(employeeEntity);
+    public EmployeeEntity createEmployee(@RequestBody EmployeeEntity employee) {
+        return employeeRepository.save(employee);
     }
 }
