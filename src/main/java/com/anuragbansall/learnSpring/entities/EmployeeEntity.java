@@ -1,0 +1,25 @@
+package com.anuragbansall.learnSpring.entities;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
+
+@Entity
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "employees")
+public class EmployeeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) // Auto-generate the primary key value
+    Long id;
+    String name;
+    String email;
+    Integer age;
+    LocalDate dateOfJoining;
+    Boolean isActive;
+}
