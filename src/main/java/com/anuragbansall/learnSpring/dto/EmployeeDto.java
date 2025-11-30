@@ -1,5 +1,6 @@
 package com.anuragbansall.learnSpring.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,5 +17,6 @@ public class EmployeeDto {
     String email;
     Integer age;
     LocalDate dateOfJoining;
+    @JsonProperty("isActive") // To ensure proper serialization/deserialization
     Boolean isActive;
 }

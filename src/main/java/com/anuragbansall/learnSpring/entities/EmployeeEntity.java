@@ -1,5 +1,6 @@
 package com.anuragbansall.learnSpring.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,5 +23,6 @@ public class EmployeeEntity {
     String email;
     Integer age;
     LocalDate dateOfJoining;
+    @JsonProperty("isActive") // To ensure proper serialization/deserialization
     Boolean isActive;
 }
