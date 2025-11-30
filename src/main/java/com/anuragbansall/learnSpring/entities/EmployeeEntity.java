@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "employees")
+@Table(name = "employees") // Default table name will be 'employee_entity' based on class name
 public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto-generate the primary key value
