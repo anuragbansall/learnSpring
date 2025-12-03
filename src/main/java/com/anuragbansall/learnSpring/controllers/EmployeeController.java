@@ -2,6 +2,7 @@ package com.anuragbansall.learnSpring.controllers;
 
 import com.anuragbansall.learnSpring.dto.EmployeeDto;
 import com.anuragbansall.learnSpring.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employee) {
+    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody @Valid EmployeeDto employee) {
         EmployeeDto createdEmployee = employeeService.createEmployee(employee);
         return new ResponseEntity<>(createdEmployee, org.springframework.http.HttpStatus.CREATED);
     }
