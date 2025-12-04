@@ -2,6 +2,7 @@ package com.anuragbansall.learnSpring.services;
 
 import com.anuragbansall.learnSpring.dto.EmployeeDto;
 import com.anuragbansall.learnSpring.entities.EmployeeEntity;
+import com.anuragbansall.learnSpring.exceptions.ResourceNotFoundException;
 import com.anuragbansall.learnSpring.repositories.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.util.ReflectionUtils;
@@ -30,6 +31,11 @@ public class EmployeeService {
 
     public EmployeeDto getEmployeeById(Long id) {
         EmployeeEntity employee = employeeRepository.findById(id).orElse(null);
+
+        if (employee == null) {
+            throw new ResourceNotFoundException("Employee with ID " + id + " not found.");
+        }
+
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
@@ -41,6 +47,11 @@ public class EmployeeService {
 
         public EmployeeDto updateEmployee(Long id, EmployeeDto employee) {
         EmployeeEntity employeeEntity = modelMapper.map(employee, EmployeeEntity.class);
+
+        if (!employeeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Employee with ID " + id + " not found.");
+        }
+
         employeeEntity.setId(id); // Ensure the ID is set for updating
         EmployeeEntity updatedEmployee = employeeRepository.save(employeeEntity);
         return modelMapper.map(updatedEmployee, EmployeeDto.class);
@@ -51,12 +62,16 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long id) {
+        if (!employeeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Employee with ID " + id + " not found.");
+        }
+
         employeeRepository.deleteById(id);
     }
 
     public EmployeeDto patchEmployee(Long id, Map<String, Object> updates) {
       if (!employeeRepository.existsById(id)) {
-          return null;
+            throw new ResourceNotFoundException("Employee with ID " + id + " not found.");
       }
 
       EmployeeEntity employeeEntity = employeeRepository.findById(id).get();

@@ -1,14 +1,17 @@
 package com.anuragbansall.learnSpring.controllers;
 
 import com.anuragbansall.learnSpring.dto.EmployeeDto;
+import com.anuragbansall.learnSpring.exceptions.ResourceNotFoundException;
 import com.anuragbansall.learnSpring.services.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/employees")
@@ -29,12 +32,15 @@ public class EmployeeController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long id) {
         EmployeeDto employee = employeeService.getEmployeeById(id);
-        if (employee != null) {
-            return ResponseEntity.ok(employee);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return ResponseEntity.ok(employee);
     }
+
+    // Exception handler for NoSuchElementException
+//    @ExceptionHandler(NoSuchElementException.class)
+//    public ResponseEntity<String> handleEmployeeNotFoundException(NoSuchElementException e) {
+//        return new ResponseEntity<>("Employee not found: " + e.getMessage(), HttpStatus.NOT_FOUND);
+//    } // It is not recommended to have exception handlers in controller classes. Instead, use @ControllerAdvice for global exception handling in separate classes.
 
     @PostMapping
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody @Valid EmployeeDto employee) {
@@ -43,7 +49,7 @@ public class EmployeeController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDto employee) {
+    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeDto employee) {
         EmployeeDto updatedEmployee = employeeService.updateEmployee(id, employee);
         return ResponseEntity.ok(updatedEmployee);
     }
