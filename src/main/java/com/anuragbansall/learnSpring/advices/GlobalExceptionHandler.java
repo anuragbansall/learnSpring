@@ -14,28 +14,32 @@ import java.util.stream.Collectors;
 // Global exception handler using @RestControllerAdvice for all controllers
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private ResponseEntity<ApiResponse<?>> buildErrorResponseEntity(ApiError apiError) {
+        return new ResponseEntity<>(new ApiResponse<>(apiError), apiError.getStatus());
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiError> handleNoSuchElementException(ResourceNotFoundException e) {
+    public ResponseEntity<ApiResponse<?>> handleNoSuchElementException(ResourceNotFoundException e) {
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.NOT_FOUND)
                 .message(e.getMessage())
                 .build();
 
-        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+        return buildErrorResponseEntity(apiError);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleGenericException(Exception e) {
+    public ResponseEntity<ApiResponse<?>> handleGenericException(Exception e) {
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .message("An unexpected error occurred: " + e.getMessage())
                 .build();
 
-        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+        return buildErrorResponseEntity(apiError);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> handleValidationException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ApiResponse<?>> handleValidationException(MethodArgumentNotValidException e) {
         List<String> errorMessage = e
                 .getBindingResult()
                 .getAllErrors()
@@ -49,6 +53,6 @@ public class GlobalExceptionHandler {
                 .subErrors(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+        return buildErrorResponseEntity(apiError);
     }
 }
