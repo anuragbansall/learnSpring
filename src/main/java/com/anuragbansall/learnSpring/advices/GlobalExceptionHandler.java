@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ApiResponse<>(apiError), apiError.getStatus());
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler(ResourceNotFoundException.class) // Handle ResourceNotFoundException
     public ResponseEntity<ApiResponse<?>> handleNoSuchElementException(ResourceNotFoundException e) {
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.NOT_FOUND)
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         return buildErrorResponseEntity(apiError);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class) // Handle all other exceptions
     public ResponseEntity<ApiResponse<?>> handleGenericException(Exception e) {
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -21,6 +21,7 @@ public class EmployeeEntity {
     Long id;
     String name;
     String email;
+    String password;
     Integer age;
     LocalDate dateOfJoining;
     @JsonProperty("isActive") // To ensure proper serialization/deserialization
