@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Table(name = "employees") // Default table name will be 'employee_entity' based on class name
 public class EmployeeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Auto-generate the primary key value
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the primary key value
     Long id;
     String name;
     String email;

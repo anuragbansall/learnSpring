@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 public class DepartmentEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     String title;
